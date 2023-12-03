@@ -30,6 +30,25 @@ public class ParkingSpace
         else this.space.Remove(car);
         return this;
     }
+
+    public void ListVehicles()
+    {
+        Console.WriteLine("Vehicles in parking space:"); // TODO: remove console log
+        foreach (var vehicle in this.space)
+        {
+            Console.WriteLine($"{vehicle.PlateNumber} {vehicle.Make} {vehicle.Model}");
+        }
+    }
+
+    public void ListVehicles(string plateNumber)
+    {
+        Console.WriteLine("Vehicles in parking space:");
+        foreach (var vehicle in this.space)
+        {
+            if (vehicle.PlateNumber == plateNumber)
+                Console.WriteLine(vehicle);
+        }
+    }
 }
 public class Vehicle
 {
