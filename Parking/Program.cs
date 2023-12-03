@@ -10,48 +10,64 @@ namespace PeterParking
 
         static void Main(string[] args)
         {
-
             MainMenu();
-
-            ParkingSpace parking = new ParkingSpace();
-            (string? make, string? model, string plateNumber) car = Vehicle.PromptUser();
-            parking.ParkVehicle(car.make, car.model, car.plateNumber);
-            parking.ListVehicles();
         }
 
         static void MainMenu()
         {
             Console.WriteLine(Environment.name);
 
-            Console.WriteLine("1. Login User");
-            Console.WriteLine("2. Exit Application");
+            ParkingSpace parking = new ParkingSpace();
 
             while (true)
             {
+                Console.WriteLine("1. Add Parking Space");
+                Console.WriteLine("2. Assign Parking Space");
+                Console.WriteLine("3. Show Parking Space");
+                Console.WriteLine("4. Remove Parking Space");
+                Console.WriteLine("5. Exit Application");
+
+                Console.WriteLine();
+
                 Console.Write("Enter choice: ");
                 string choice = Console.ReadLine()!;
                 int option = int.Parse(choice);
-                Console.WriteLine(option); // TODO: remove console log
 
-
+                Console.WriteLine('\n');
                 if (option == 1)
                 {
-                    (bool isAuthenticated, string username, string password) auth = Authenticator.AuthenticateUser();
-                    Console.WriteLine($"Greetings, {auth.username}!");
-                    if (auth.isAuthenticated == true) break;
+                    Console.Write("Enter parking space capacity: ");
+                    int capacity = int.Parse(Console.ReadLine()!);
+                    parking.ExtendParkingSpace(capacity);
+                    continue;
                 }
                 else if (option == 2)
                 {
-                    System.Environment.Exit(0);
-                    // TODO: print a goodbye message
+                    (string? make, string? model, string plateNumber, int slot) car = Vehicle.PromptUser();
+                    parking.ParkVehicle(car.make, car.model, car.plateNumber, car.slot);
+                    continue;
+                }
+                else if (option == 3) parking.ListVehicles();
+                else if (option == 4)
+                {
+                    Console.Write("Enter plate number: ");
+                    string plateNumber = Console.ReadLine()!;
+                    parking.RemoveVehicle(plateNumber);
+                }
+                else if (option == 5)
+                {
+                    Console.WriteLine();
+                    Console.WriteLine("Goodbye!");
                     break;
                 }
                 else
                 {
                     Console.WriteLine("Invalid choice!");
+                    Console.WriteLine('\n');
                     continue;
                 }
             }
+            System.Environment.Exit(0);
         }
     }
 }

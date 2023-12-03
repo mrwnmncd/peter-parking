@@ -1,53 +1,65 @@
+using System;
+using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 public class ParkingSpace
 {
     public string? PlateNumber { get; set; }
-    public List<Vehicle> space { get; set; }
+    public Vehicle[] parkingspace { get; set; }
+    public int Capacity { get; }
 
-    public ParkingSpace()
+    public ParkingSpace(int capacity = 50)
     {
-        List<Vehicle> parkspace = new List<Vehicle>();
-        this.space = parkspace;
+        this.Capacity = capacity;
+        Vehicle[] parkingspace = new Vehicle[capacity];
+        this.parkingspace = parkingspace;
     }
 
-    public ParkingSpace ParkVehicle(string? make, string? model, string plateNumber)
+    public void ParkVehicle(string? make, string? model, string plateNumber, int parkingSlot)
     {
-        this.PlateNumber = plateNumber;
-        Vehicle vehicle = new Vehicle();
-        vehicle.Make = make;
-        vehicle.Model = model;
-        vehicle.PlateNumber = plateNumber;
-        this.space.Add(vehicle);
-        return this;
-    }
-
-    public ParkingSpace? UnparkVehicle(string plateNumber)
-    {
-        this.PlateNumber = plateNumber;
-        Vehicle? car = this.space.Find(x => x.PlateNumber == plateNumber);
-        if (car is null) {
-            Console.WriteLine("Vehicle not found!"); return null;
+        parkingSlot -= 1;
+        Vehicle vehicle = new Vehicle()
+        { Make = make, Model = model, PlateNumber = plateNumber };
+        if (this.parkingspace[parkingSlot] is null || this.parkingspace[parkingSlot].PlateNumber == null)
+        {
+            Console.WriteLine($"Parking slot {parkingSlot + 1} reserved for vehicle with plate number \"{vehicle.PlateNumber}\".\n");
+            this.parkingspace[parkingSlot] = vehicle;
         }
-        else this.space.Remove(car);
-        return this;
+        else
+        {
+            int availableSlot = Array.IndexOf(this.parkingspace, null) + 1;
+            Console.WriteLine($"\nParking slot is already taken for vehicle with plate number \"{this.parkingspace[parkingSlot].PlateNumber}\".");
+            {
+                Console.Write($"Parking slot {availableSlot} is available. Would you like to park there instead? [y/N]: ");
+                string choice = Console.ReadLine()!;
+                if (choice == "y")
+                    ParkVehicle(make, model, plateNumber, availableSlot);
+            }
+        }
+    }
+
+    public void RemoveVehicle(string plateNumber)
+    {
+        int slot = Array.FindIndex(this.parkingspace, vehicle => vehicle.PlateNumber == plateNumber);
+        this.parkingspace[slot] = new Vehicle();
+        Console.WriteLine($"Vehicle with plate number \"{plateNumber}\" removed from parking {slot}.\n");
     }
 
     public void ListVehicles()
     {
+        Console.WriteLine($"\nTotal parking space: {this.parkingspace.Length}");
         Console.WriteLine("Vehicles in parking space:"); // TODO: remove console log
-        foreach (var vehicle in this.space)
+        for (int i = 0; i < this.parkingspace.Length; i++)
         {
-            Console.WriteLine($"{vehicle.PlateNumber} {vehicle.Make} {vehicle.Model}");
+            if (this.parkingspace[i] is not null && this.parkingspace[i].PlateNumber != null)
+                Console.WriteLine($"Parking Slot {i + 1}: {this.parkingspace[i].ToString()}");
         }
     }
-
-    public void ListVehicles(string plateNumber)
+    public void ExtendParkingSpace(int capacity)
     {
-        Console.WriteLine("Vehicles in parking space:");
-        foreach (var vehicle in this.space)
-        {
-            if (vehicle.PlateNumber == plateNumber)
-                Console.WriteLine(vehicle);
-        }
+        Vehicle[] space = this.parkingspace;
+        Array.Resize(ref space, this.parkingspace.Length + capacity);
+        this.parkingspace = space;
+        Console.WriteLine($"Parking space extended by {capacity} slots. Total of {space.Length} slots.");
     }
 }
 public class Vehicle
@@ -56,20 +68,36 @@ public class Vehicle
     public string? Model { get; set; }
     public string? PlateNumber { get; set; }
 
-    public static (string? make, string? model, string plateNumber) PromptUser()
+    public override string ToString()
     {
+        return $"{this.PlateNumber} {this.Make} {this.Model}";
+    }
+
+    public static (string? make, string? model, string plateNumber, int slot) PromptUser()
+    {
+        string parkingSlot;
+        int slot;
+        string plateNumber;
+        string? make;
+        string? model;
+
         Console.Write("Enter vehicle make (manufacturer) [enter to skip]: ");
-        string? make = Console.ReadLine();
+        make = Console.ReadLine();
         Console.Write("Enter vehicle model [enter to skip]: ");
-        string? model = Console.ReadLine();
+        model = Console.ReadLine();
         Console.Write("Enter vehicle plate number [required]: ");
-        string plateNumber = Console.ReadLine()!;
+        plateNumber = Console.ReadLine()!;
+        Console.Write("Enter parking slot [required]: ");
+        parkingSlot = Console.ReadLine()!;
+
+        if (string.IsNullOrEmpty(parkingSlot) || string.IsNullOrWhiteSpace(parkingSlot))
+            Console.WriteLine("Parking slot is required!");
+
+        slot = int.Parse(parkingSlot);
+
         if (string.IsNullOrEmpty(plateNumber) || string.IsNullOrWhiteSpace(plateNumber))
-        {
-            Console.WriteLine("Plate number is required!"); // TODO: remove console log
-            // TODO: handle null
-            // TODO: loop until valid input
-        }
-        return (make, model, plateNumber);
+            Console.WriteLine("Plate number is required!");
+
+        return (make, model, plateNumber, slot);
     }
 }
