@@ -1,3 +1,15 @@
+public class ParkingSpace
+{
+    public string? PlateNumber { get; set; }
+    public List<Vehicle> space { get; set; }
+
+    public ParkingSpace()
+    {
+        List<Vehicle> parkspace = new List<Vehicle>();
+        this.space = parkspace;
+    }
+
+}
 public class Vehicle
 {
     public string? Make { get; set; }
