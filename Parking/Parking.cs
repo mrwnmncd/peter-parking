@@ -9,6 +9,27 @@ public class ParkingSpace
         this.space = parkspace;
     }
 
+    public ParkingSpace ParkVehicle(string? make, string? model, string plateNumber)
+    {
+        this.PlateNumber = plateNumber;
+        Vehicle vehicle = new Vehicle();
+        vehicle.Make = make;
+        vehicle.Model = model;
+        vehicle.PlateNumber = plateNumber;
+        this.space.Add(vehicle);
+        return this;
+    }
+
+    public ParkingSpace? UnparkVehicle(string plateNumber)
+    {
+        this.PlateNumber = plateNumber;
+        Vehicle? car = this.space.Find(x => x.PlateNumber == plateNumber);
+        if (car is null) {
+            Console.WriteLine("Vehicle not found!"); return null;
+        }
+        else this.space.Remove(car);
+        return this;
+    }
 }
 public class Vehicle
 {
