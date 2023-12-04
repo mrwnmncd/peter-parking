@@ -34,13 +34,17 @@ public class ParkingSpace
 
         if (string.IsNullOrEmpty(parkingSlot) || string.IsNullOrWhiteSpace(parkingSlot))
             Console.WriteLine("Parking lot is required!");
-
-            // TODO: handle not int input
+        
+        if (!int.TryParse(parkingSlot, out slot)) {
+            Console.WriteLine("Parking lot must be a valid number!\n");
+            return; 
+        }
+        
 
         if (string.IsNullOrEmpty(plateNumber) || string.IsNullOrWhiteSpace(plateNumber))
             Console.WriteLine("Plate number is required!");
 
-        slot = int.Parse(parkingSlot) - 1;
+        slot = slot - 1;
 
         if (slot > this.parkingspace.Length)
         {
@@ -60,7 +64,7 @@ public class ParkingSpace
         if (this.parkingspace[slot] is null || this.parkingspace[slot].PlateNumber == null)
         {
             Console.WriteLine($"Parking lot {parkingSlot + 1} reserved "
-            + "for vehicle with plate number \"{vehicle.PlateNumber}\".\n");
+            + $"for vehicle with plate number \"{vehicle.PlateNumber}\".\n");
 
             this.parkingspace[slot] = vehicle;
             return;
@@ -81,8 +85,6 @@ public class ParkingSpace
 
     public void RemoveVehicle()
     {
-
-        // TODO: handle missing plate number
         string plateNumber;
         int slot;
 
@@ -90,6 +92,9 @@ public class ParkingSpace
 
         Console.Write("Enter plate number: ");
         plateNumber = Console.ReadLine()!;
+
+        if (string.IsNullOrEmpty(plateNumber) || string.IsNullOrWhiteSpace(plateNumber))
+            Console.WriteLine("Plate number is required!");
 
         slot = Array.FindIndex(this.parkingspace, vehicle => vehicle.PlateNumber == plateNumber);
         this.parkingspace[slot] = new Vehicle();
@@ -112,6 +117,17 @@ public class ParkingSpace
         }
     }
 
+    private Vehicle SearchVehicle(string plateNumber)
+    {
+        Vehicle vehicle = new Vehicle();
+        int slot;
+
+        slot = Array.FindIndex(this.parkingspace, vehicle => vehicle.PlateNumber == plateNumber);
+        vehicle = this.parkingspace[slot];
+
+        return vehicle;
+    }
+
     public int SearchNearestFreeParking()
     {
         int availableSlot = Array.IndexOf(this.parkingspace, null) + 1;
@@ -127,7 +143,7 @@ public class ParkingSpace
         Console.WriteLine("Add Parking Lots");
 
         Console.Write("Enter parking space capacity: ");
-        capacity = int.Parse(Console.ReadLine()!);
+        capacity = int.Parse(Console.ReadLine()!); // TODO: handle non int entry
         Console.WriteLine();
 
         space = this.parkingspace;
@@ -137,6 +153,8 @@ public class ParkingSpace
         Console.WriteLine($"Parking space extended by {capacity} lots. Total of {space.Length} parking lots.");
         Console.WriteLine('\n');
     }
+
+    
 }
 public class Vehicle
 {
@@ -147,5 +165,58 @@ public class Vehicle
     public override string ToString()
     {
         return $"{this.PlateNumber} {this.Make} {this.Model}";
+    }
+
+    public static string InputPlateNumber()
+    {
+        string plateNumber;
+
+        Console.Write("Enter plate number: ");
+        plateNumber = Console.ReadLine()!;
+
+        if (string.IsNullOrEmpty(plateNumber) || string.IsNullOrWhiteSpace(plateNumber))
+            Console.WriteLine("Plate number is required!");
+
+        // TODO: create plate number validator
+
+        return plateNumber;
+    }
+
+    public static string? InputMake()
+    {
+        string? make;
+
+        Console.Write("Enter vehicle make (manufacturer) [enter to skip]: ");
+        make = Console.ReadLine();
+
+        return make;
+    }
+
+    public static string? InputModel()
+    {
+        string? model;
+
+        Console.Write("Enter vehicle model [enter to skip]: ");
+        model = Console.ReadLine();
+
+        return model;
+    }
+
+    public static int? InputParkingLotNumber() {
+        string parkingSlot;
+        int slot;
+
+        Console.Write("Enter parking lot [required]: ");
+        parkingSlot = Console.ReadLine()!;
+
+        if (string.IsNullOrEmpty(parkingSlot) || string.IsNullOrWhiteSpace(parkingSlot))
+            Console.WriteLine("Parking lot is required!\n");
+        
+        if (!int.TryParse(parkingSlot, out slot)) {
+            Console.WriteLine("Parking lot must be a valid number!\n");
+            return null;
+        }
+
+        return slot;
     }
 }
