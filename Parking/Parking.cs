@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Text.RegularExpressions;
 public class ParkingSpace
 {
     public string? PlateNumber { get; set; }
@@ -228,14 +229,25 @@ public class Vehicle
     public static string InputPlateNumber()
     {
         string plateNumber;
+        string pattern;
+        bool isValid;
 
-        Console.Write("Enter plate number: ");
-        plateNumber = Console.ReadLine()!;
+        while (true)
+        {
+            Console.Write("Enter plate number: ");
+            plateNumber = Console.ReadLine()!;
 
-        if (string.IsNullOrEmpty(plateNumber) || string.IsNullOrWhiteSpace(plateNumber))
-            Console.WriteLine("Plate number is required!");
+            pattern = @"^[a-zA-Z0-9]{7}$";
 
-        // TODO: create plate number validator
+            isValid = Regex.IsMatch(plateNumber, pattern);
+
+            if (!isValid)
+            { Console.WriteLine("Plate number must be 7 characters long and alphanumeric!"); continue; }
+
+            if (string.IsNullOrEmpty(plateNumber) || string.IsNullOrWhiteSpace(plateNumber))
+            { Console.WriteLine("Plate number is required!"); continue; }
+            break;
+        }
 
         return plateNumber;
     }
