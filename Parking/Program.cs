@@ -1,6 +1,4 @@
-﻿using System.ComponentModel;
-using System.Linq;
-using System.Runtime.InteropServices;
+﻿using System;
 using System.Collections.Generic;
 
 namespace PeterParking
@@ -15,58 +13,40 @@ namespace PeterParking
 
         static void MainMenu()
         {
-            Console.WriteLine(Environment.name);
-
             ParkingSpace parking = new ParkingSpace();
 
             while (true)
             {
-                Console.WriteLine("1. Add Parking Space");
-                Console.WriteLine("2. Assign Parking Space");
-                Console.WriteLine("3. Show Parking Space");
-                Console.WriteLine("4. Remove Parking Space");
-                Console.WriteLine("5. Exit Application");
+                Console.WriteLine(Environment.name + '\n');
+                Console.WriteLine("a. Add Parking Lot");
+                Console.WriteLine("b. Assign Parking Lot");
+                Console.WriteLine("c. Remove Parking Assignment");
+                Console.WriteLine("d. Show Parking Space");
+                Console.WriteLine("e. Find Nearest Parking Lot");
+                Console.WriteLine("f. Exit Application");
 
                 Console.WriteLine();
 
                 Console.Write("Enter choice: ");
                 string choice = Console.ReadLine()!;
-                int option = int.Parse(choice);
+                choice = choice.ToLower();
 
                 Console.WriteLine('\n');
-                if (option == 1)
-                {
-                    Console.Write("Enter parking space capacity: ");
-                    int capacity = int.Parse(Console.ReadLine()!);
-                    parking.ExtendParkingSpace(capacity);
-                    continue;
-                }
-                else if (option == 2)
-                {
-                    (string? make, string? model, string plateNumber, int slot) car = Vehicle.PromptUser();
-                    parking.ParkVehicle(car.make, car.model, car.plateNumber, car.slot);
-                    continue;
-                }
-                else if (option == 3) parking.ListVehicles();
-                else if (option == 4)
-                {
-                    Console.Write("Enter plate number: ");
-                    string plateNumber = Console.ReadLine()!;
-                    parking.RemoveVehicle(plateNumber);
-                }
-                else if (option == 5)
-                {
-                    Console.WriteLine();
-                    Console.WriteLine("Goodbye!");
-                    break;
-                }
+                if (choice == "a") { parking.ExtendParkingSpace(); continue; }
+                if (choice == "b") { parking.ParkVehicle(); continue; }
+                if (choice == "c") { parking.RemoveVehicle(); continue; }
+                if (choice == "d") { parking.ListVehicles(); continue; }
+                if (choice == "e") { parking.SearchNearestFreeParking(); continue; }
+                if (choice == "f") { Console.WriteLine('\n' + "Goodbye!"); break; }
                 else
                 {
                     Console.WriteLine("Invalid choice!");
+                    Console.WriteLine("Select from optiona A to E only!");
                     Console.WriteLine('\n');
                     continue;
                 }
             }
+            Console.WriteLine('\n' + "Goodbye!");
             System.Environment.Exit(0);
         }
     }
