@@ -24,7 +24,7 @@ namespace PeterParking
                 Console.WriteLine("d. Remove Parking Assignment");
                 Console.WriteLine("e. Show Parking Space");
                 Console.WriteLine("f. Search Vehicle [UNFINISHED]");
-                Console.WriteLine("g. Find Nearest Free Parking");
+                Console.WriteLine("g. Find Nearest Available Parking");
                 Console.WriteLine("h. Exit Application");
 
                 Console.WriteLine();
