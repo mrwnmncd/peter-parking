@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Data;
 public class ParkingSpace
 {
     public string? PlateNumber { get; set; }
@@ -34,12 +35,13 @@ public class ParkingSpace
 
         if (string.IsNullOrEmpty(parkingSlot) || string.IsNullOrWhiteSpace(parkingSlot))
             Console.WriteLine("Parking lot is required!");
-        
-        if (!int.TryParse(parkingSlot, out slot)) {
+
+        if (!int.TryParse(parkingSlot, out slot))
+        {
             Console.WriteLine("Parking lot must be a valid number!\n");
-            return; 
+            return;
         }
-        
+
 
         if (string.IsNullOrEmpty(plateNumber) || string.IsNullOrWhiteSpace(plateNumber))
             Console.WriteLine("Plate number is required!");
@@ -102,6 +104,46 @@ public class ParkingSpace
         Console.WriteLine($"Vehicle with plate number \"{plateNumber}\" removed from parking {slot}.\n");
     }
 
+    public void UpdateParkingDetails()
+    {
+        string plateNumber;
+        int slot;
+        string? make;
+        string? model;
+        Vehicle vehicle;
+
+        Console.WriteLine("Update Parking Details");
+
+        Console.Write("Enter plate number: ");
+        plateNumber = Console.ReadLine()!;
+
+        if (string.IsNullOrEmpty(plateNumber) || string.IsNullOrWhiteSpace(plateNumber))
+            Console.WriteLine("Plate number is required!");
+
+        slot = Array.FindIndex(this.parkingspace, vehicle => vehicle.PlateNumber == plateNumber);
+        vehicle = this.parkingspace[slot];
+
+        Console.WriteLine($"Parking details for vehicle with plate number \"{plateNumber}\":");
+        Console.WriteLine(vehicle.ToForrmattedString());
+        Console.WriteLine();
+
+        Console.Write("Enter vehicle make (manufacturer) [enter to skip]: ");
+        make = Console.ReadLine();
+        Console.Write("Enter vehicle model [enter to skip]: ");
+        model = Console.ReadLine();
+        Console.WriteLine("Enter vehicle plate number [enter to skip]: ");
+        plateNumber = Console.ReadLine()!;
+
+        if (!string.IsNullOrEmpty(plateNumber) || !string.IsNullOrWhiteSpace(plateNumber))
+            vehicle.PlateNumber = plateNumber;
+        if (!string.IsNullOrEmpty(make) || !string.IsNullOrWhiteSpace(make))
+            vehicle.Make = make;
+        if (!string.IsNullOrEmpty(model) || !string.IsNullOrWhiteSpace(model))
+            vehicle.Model = model;
+
+        Console.WriteLine($"Parking details updated for vehicle with plate number \"{plateNumber}\".\n");
+    }
+
     public void ListVehicles()
     {
 
@@ -137,13 +179,21 @@ public class ParkingSpace
     }
     public void ExtendParkingSpace()
     {
+        string inputCapacity;
         int capacity;
+
         Vehicle[] space;
 
         Console.WriteLine("Add Parking Lots");
 
         Console.Write("Enter parking space capacity: ");
-        capacity = int.Parse(Console.ReadLine()!); // TODO: handle non int entry
+
+        inputCapacity = Console.ReadLine()!;
+        if (!int.TryParse(inputCapacity, out capacity))
+        {
+            Console.WriteLine("Parking space capacity must be a valid number!\n");
+            return;
+        };
         Console.WriteLine();
 
         space = this.parkingspace;
@@ -153,8 +203,6 @@ public class ParkingSpace
         Console.WriteLine($"Parking space extended by {capacity} lots. Total of {space.Length} parking lots.");
         Console.WriteLine('\n');
     }
-
-    
 }
 public class Vehicle
 {
@@ -165,6 +213,13 @@ public class Vehicle
     public override string ToString()
     {
         return $"{this.PlateNumber} {this.Make} {this.Model}";
+    }
+
+    public string ToForrmattedString()
+    {
+        return $"Make: {this.Make} " +
+            $"Model: {this.Model} " +
+            $"Plate Number: {this.PlateNumber}";
     }
 
     public static string InputPlateNumber()
@@ -202,7 +257,8 @@ public class Vehicle
         return model;
     }
 
-    public static int? InputParkingLotNumber() {
+    public static int? InputParkingLotNumber()
+    {
         string parkingSlot;
         int slot;
 
@@ -211,8 +267,9 @@ public class Vehicle
 
         if (string.IsNullOrEmpty(parkingSlot) || string.IsNullOrWhiteSpace(parkingSlot))
             Console.WriteLine("Parking lot is required!\n");
-        
-        if (!int.TryParse(parkingSlot, out slot)) {
+
+        if (!int.TryParse(parkingSlot, out slot))
+        {
             Console.WriteLine("Parking lot must be a valid number!\n");
             return null;
         }
