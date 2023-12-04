@@ -32,6 +32,8 @@ namespace PeterParking
                 choice = choice.ToLower();
 
                 Console.WriteLine('\n');
+                // TODO: car type
+                // TODO: update parking deetsd
                 if (choice == "a") { parking.ExtendParkingSpace(); continue; }
                 if (choice == "b") { parking.ParkVehicle(); continue; }
                 if (choice == "c") { parking.RemoveVehicle(); continue; }
