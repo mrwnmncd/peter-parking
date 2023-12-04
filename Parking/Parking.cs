@@ -147,7 +147,7 @@ public class ParkingSpace
     public void ListVehicles()
     {
 
-        Console.WriteLine("Enumerate Parking");
+        Console.WriteLine("Enumerate Occupied Parking");
 
         Console.WriteLine($"\nTotal parking space: {this.parkingspace.Length}");
         Console.WriteLine("Vehicles in parking space:");
@@ -159,10 +159,17 @@ public class ParkingSpace
         }
     }
 
-    private Vehicle SearchVehicle(string plateNumber)
+    public Vehicle SearchVehicle()
     {
         Vehicle vehicle = new Vehicle();
         int slot;
+        string plateNumber;
+
+        Console.Write("Enter plate number: ");
+        plateNumber = Console.ReadLine()!;
+
+        if (string.IsNullOrEmpty(plateNumber) || string.IsNullOrWhiteSpace(plateNumber))
+            Console.WriteLine("Plate number is required!");
 
         slot = Array.FindIndex(this.parkingspace, vehicle => vehicle.PlateNumber == plateNumber);
         vehicle = this.parkingspace[slot];

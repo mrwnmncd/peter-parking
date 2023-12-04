@@ -23,7 +23,7 @@ namespace PeterParking
                 Console.WriteLine("c. Update Parking Details");
                 Console.WriteLine("d. Remove Parking Assignment");
                 Console.WriteLine("e. Show Parking Space");
-                Console.WriteLine("f. Search Vehicle [UNFINISHED]");
+                Console.WriteLine("f. Search Vehicle");
                 Console.WriteLine("g. Find Nearest Available Parking");
                 Console.WriteLine("h. Exit Application");
 
@@ -39,7 +39,7 @@ namespace PeterParking
                 if (choice == "c") { parking.UpdateParkingDetails(); continue; }
                 if (choice == "d") { parking.RemoveVehicle(); continue; }
                 if (choice == "e") { parking.ListVehicles(); continue; }
-                if (choice == "f") { continue; }
+                if (choice == "f") { parking.SearchVehicle(); continue; }
                 if (choice == "g") { parking.SearchNearestFreeParking(); continue; }
                 if (choice == "h") { Console.WriteLine('\n' + "Goodbye!"); break; }
                 else
