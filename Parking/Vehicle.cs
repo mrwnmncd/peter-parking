@@ -44,7 +44,6 @@ class VehicleFS
 
         FileManager.CreateFile(Environment.ParkingSpacePath);
         vehicle = new Vehicle[Environment.InitialCapacity];
-        Console.WriteLine(Environment.InitialCapacity);
         for (int i = 1; i < Environment.InitialCapacity; i++)
         {
             FileManager.AppendToFile(Environment.ParkingSpacePath, "");
