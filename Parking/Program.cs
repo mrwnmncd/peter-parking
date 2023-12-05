@@ -13,7 +13,9 @@ namespace PeterParking
 
         static void MainMenu()
         {
-            ParkingSpace parking = new ParkingSpace();
+            ParkingSpace parking;
+            
+            parking = new ParkingSpace();
 
             while (true)
             {
