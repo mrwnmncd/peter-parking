@@ -14,7 +14,7 @@ namespace PeterParking
         static void MainMenu()
         {
             ParkingSpace parking;
-            
+
             parking = new ParkingSpace();
 
             while (true)
@@ -36,23 +36,29 @@ namespace PeterParking
                 choice = choice.ToLower();
 
                 Console.WriteLine('\n');
-                if (choice == "a") { parking.ExtendParkingSpace(); continue; }
-                if (choice == "b") { parking.ParkVehicle(); continue; }
-                if (choice == "c") { parking.UpdateParkingDetails(); continue; }
-                if (choice == "d") { parking.RemoveVehicle(); continue; }
-                if (choice == "e") { parking.ListVehicles(); continue; }
-                if (choice == "f") { parking.SearchVehicle(); continue; }
-                if (choice == "g") { parking.SearchNearestFreeParking(); continue; }
-                if (choice == "h") { Console.WriteLine('\n' + "Goodbye!"); break; }
+                if (choice == "a") { parking.ExtendParkingSpace(); }
+                else if (choice == "b") { parking.ParkVehicle(); }
+                else if (choice == "c") { parking.UpdateParkingDetails(); }
+                else if (choice == "d") { parking.RemoveVehicle(); }
+                else if (choice == "e") { parking.ListVehicles(); }
+                else if (choice == "f") { parking.SearchVehicle(); }
+                else if (choice == "g") { parking.SearchNearestFreeParking(); }
+                else if (choice == "h") { Console.WriteLine('\n' + "Goodbye!"); break; }
                 else
                 {
                     Console.WriteLine("Invalid choice!");
-                    Console.WriteLine("Select from optiona A to H only!");
+                    Console.WriteLine("Select from options A to H only!");
                     Console.WriteLine('\n');
+                }
+                {
+                    Console.Write("Would you like to perform another action? [Y/n]: ");
+                    string choice2 = Console.ReadLine()!;
+                    choice2 = choice2.ToLower();
+                    if (choice2 == "n") break;
+                    Console.WriteLine();
                     continue;
                 }
             }
-            Console.WriteLine('\n' + "Goodbye!");
             System.Environment.Exit(0);
         }
     }

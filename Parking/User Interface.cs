@@ -13,6 +13,11 @@ class UserInterface
             Console.Write("Enter plate number: ");
             plateNumber = Console.ReadLine()!;
 
+            if (string.IsNullOrEmpty(plateNumber) || string.IsNullOrWhiteSpace(plateNumber))
+            { Console.WriteLine("Plate number is required!"); continue; }
+
+            plateNumber = plateNumber.ToUpper();
+
             pattern = @"^[a-zA-Z0-9 ]{7}$";
 
             isValid = Regex.IsMatch(plateNumber, pattern);
@@ -20,8 +25,6 @@ class UserInterface
             if (!isValid)
             { Console.WriteLine("Plate number must be 7 characters long and alphanumeric!"); continue; }
 
-            if (string.IsNullOrEmpty(plateNumber) || string.IsNullOrWhiteSpace(plateNumber))
-            { Console.WriteLine("Plate number is required!"); continue; }
             break;
         }
 
