@@ -50,14 +50,8 @@ namespace PeterParking
                     Console.WriteLine("Select from options A to H only!");
                     Console.WriteLine('\n');
                 }
-                {
-                    Console.Write("Would you like to perform another action? [Y/n]: ");
-                    string choice2 = Console.ReadLine()!;
-                    choice2 = choice2.ToLower();
-                    if (choice2 == "n") break;
-                    Console.WriteLine();
-                    continue;
-                }
+                continue;
+
             }
             System.Environment.Exit(0);
         }
