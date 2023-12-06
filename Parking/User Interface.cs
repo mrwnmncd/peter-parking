@@ -18,12 +18,12 @@ class UserInterface
 
             plateNumber = plateNumber.ToUpper();
 
-            pattern = @"^[a-zA-Z0-9 ]{7}$";
+            pattern = @"^[a-zA-Z0-9 ]{8}$";
 
             isValid = Regex.IsMatch(plateNumber, pattern);
 
             if (!isValid)
-            { Console.WriteLine("Plate number must be 7 characters long and alphanumeric!"); continue; }
+            { Console.WriteLine($"Plate number must be {Environment.PlateNumberCharacters} characters long and alphanumeric!"); continue; }
 
             break;
         }
