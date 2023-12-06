@@ -14,13 +14,13 @@ public class ParkingSpace
         this.parkingspace = VehicleFS.CreateVehicleInstance();
     }
 
-    public void ParkVehicle()
+    public void ParkVehicle(Vehicle? vehicle = null)
     {
         Console.WriteLine("Park Vehicle");
         string parkingSlot;
         int slot;
 
-        Vehicle vehicle = UserInterface.InputVehicle();
+        if (vehicle is null) vehicle = UserInterface.InputVehicle();
 
         while (true)
         {
@@ -42,7 +42,7 @@ public class ParkingSpace
                 SearchNearestFreeParking();
                 Console.Write($"Park vehicle there instead? [y/N]: ");
                 string choice = Console.ReadLine()!;
-                if (choice == "y") ParkVehicle();
+                if (choice == "y") ParkVehicle(vehicle);
             }
             return;
         }
