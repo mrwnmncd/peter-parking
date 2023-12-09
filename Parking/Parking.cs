@@ -5,8 +5,9 @@ public class ParkingSpace
     public Vehicle[] parkingspace { get; set; }
     public int Capacity { get; }
 
-    public ParkingSpace(int capacity = 50)
+    public ParkingSpace(int capacity = 0)
     {
+        if (capacity == 0) capacity = ProgramVariables.InitialCapacity;
         this.Capacity = capacity;
         this.parkingspace = VehicleFS.CreateVehicleInstance();
     }
