@@ -61,7 +61,7 @@ public class ParkingSpace
                 SearchNearestFreeParking();
                 Console.Write($"Park vehicle there instead? [y/N]: ");
                 string choice = Console.ReadLine()!;
-                if (choice == "y") ParkVehicle();
+                if (choice == "y") ParkVehicle(vehicle);
             }
         }
     }

@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace PeterParking
+﻿namespace PeterParking
 {
     class Program
     {
 
-        static void Main(string[] args)
+        static void Main()
         {
             MainMenu();
         }
