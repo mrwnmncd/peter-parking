@@ -38,15 +38,15 @@ class VehicleFS
     {
         Vehicle[] vehicle;
 
-        if (FileManager.CheckFileExists(Environment.ParkingSpacePath))
+        if (FileManager.CheckFileExists(ProgramVariables.ParkingSpacePath))
             return EnumerateParkedVehicles()!;
 
 
-        FileManager.CreateFile(Environment.ParkingSpacePath);
-        vehicle = new Vehicle[Environment.InitialCapacity];
-        for (int i = 1; i < Environment.InitialCapacity; i++)
+        FileManager.CreateFile(ProgramVariables.ParkingSpacePath);
+        vehicle = new Vehicle[ProgramVariables.InitialCapacity];
+        for (int i = 1; i < ProgramVariables.InitialCapacity; i++)
         {
-            FileManager.AppendToFile(Environment.ParkingSpacePath, "");
+            FileManager.AppendToFile(ProgramVariables.ParkingSpacePath, "");
         }
         return vehicle;
     }
@@ -62,7 +62,7 @@ class VehicleFS
         ParkingSlot -= 1;
 
         data = $"{PlateNumber} | {Make} | {Model}";
-        FileManager.WriteToFile(Environment.ParkingSpacePath, data, ParkingSlot);
+        FileManager.WriteToFile(ProgramVariables.ParkingSpacePath, data, ParkingSlot);
     }
 
     public static void RemoveFromFile(string PlateNumber)
@@ -75,7 +75,7 @@ class VehicleFS
         string[] newLines;
         string newLine;
 
-        lines = FileManager.ReadFromFile(Environment.ParkingSpacePath);
+        lines = FileManager.ReadFromFile(ProgramVariables.ParkingSpacePath);
         newLines = new string[lines.Length];
         for (int i = 0; i < lines.Length; i++)
         {
@@ -95,7 +95,7 @@ class VehicleFS
                 newLines[i] = newLine;
             }
         }
-        FileManager.OverwriteToFile(Environment.ParkingSpacePath, newLines);
+        FileManager.OverwriteToFile(ProgramVariables.ParkingSpacePath, newLines);
     }
 
     public static Vehicle? SearchVehicle(string PlateNumber)
@@ -108,7 +108,7 @@ class VehicleFS
         int ParkingSlot;
         Vehicle vehicle;
 
-        lines = FileManager.ReadFromFile(Environment.ParkingSpacePath);
+        lines = FileManager.ReadFromFile(ProgramVariables.ParkingSpacePath);
 
         foreach (string line in lines)
         {
@@ -141,7 +141,7 @@ class VehicleFS
         int ParkingSlot;
         Vehicle vehicle;
 
-        lines = FileManager.ReadFromFile(Environment.ParkingSpacePath);
+        lines = FileManager.ReadFromFile(ProgramVariables.ParkingSpacePath);
 
         foreach (string line in lines)
         {
@@ -159,7 +159,7 @@ class VehicleFS
 
                 vehicle = new Vehicle()
                 { Make = make, Model = model, PlateNumber = PlateNumber };
-                FileManager.WriteToFile(Environment.ParkingSpacePath,
+                FileManager.WriteToFile(ProgramVariables.ParkingSpacePath,
                 vehicle.ToFormattedString(), ParkingSlot);
                 return vehicle;
             }
@@ -173,7 +173,7 @@ class VehicleFS
         string[] data;
         string plateNumber;
 
-        lines = FileManager.ReadFromFile(Environment.ParkingSpacePath);
+        lines = FileManager.ReadFromFile(ProgramVariables.ParkingSpacePath);
 
         data = lines[ParkingSlot - 1].Split('|');
         plateNumber = data[0].Trim();
@@ -195,7 +195,7 @@ class VehicleFS
         string Model;
         Vehicle vehicle;
 
-        lines = FileManager.ReadFromFile(Environment.ParkingSpacePath);
+        lines = FileManager.ReadFromFile(ProgramVariables.ParkingSpacePath);
 
         if (lines is null) return CreateVehicleInstance()!;
 
@@ -222,7 +222,7 @@ class VehicleFS
 
         string[] data;
 
-        lines = FileManager.ReadFromFile(Environment.ParkingSpacePath);
+        lines = FileManager.ReadFromFile(ProgramVariables.ParkingSpacePath);
 
         foreach (string line in lines)
         {
@@ -237,9 +237,9 @@ class VehicleFS
     {
         for (int i = 0; i < newCapacity; i++)
         {
-            FileManager.AppendToFile(Environment.ParkingSpacePath, "");
+            FileManager.AppendToFile(ProgramVariables.ParkingSpacePath, "");
         }
-        return FileManager.ReadFromFile(Environment.ParkingSpacePath).Length;
+        return FileManager.ReadFromFile(ProgramVariables.ParkingSpacePath).Length;
     }
 
 }

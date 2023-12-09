@@ -6,7 +6,7 @@ class FileSystem
     public static void CreateFile()
     {
         string path;
-        path = Environment.ParkingSpacePath;
+        path = ProgramVariables.ParkingSpacePath;
         if (!File.Exists(path))
         {
             File.Create(path).Close();
@@ -17,7 +17,7 @@ class FileSystem
     {
         string path;
 
-        path = Environment.ParkingSpacePath;
+        path = ProgramVariables.ParkingSpacePath;
         using (StreamWriter sw = File.AppendText(path))
         {
             sw.WriteLine(content);
@@ -29,7 +29,7 @@ class FileSystem
         string path;
         string[] lines;
 
-        path = Environment.ParkingSpacePath;
+        path = ProgramVariables.ParkingSpacePath;
 
         CreateFile();
 

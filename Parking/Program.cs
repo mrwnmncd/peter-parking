@@ -19,7 +19,7 @@ namespace PeterParking
 
             while (true)
             {
-                Console.WriteLine(Environment.name + '\n');
+                Console.WriteLine(ProgramVariables.name + '\n');
                 Console.WriteLine("a. Add Parking Lot");
                 Console.WriteLine("b. Assign Parking Lot");
                 Console.WriteLine("c. Update Parking Details");

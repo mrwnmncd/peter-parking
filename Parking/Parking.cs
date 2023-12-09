@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Data;
 using System.Text.RegularExpressions;
 public class ParkingSpace
 {
@@ -167,12 +164,12 @@ public class ParkingSpace
             if (string.IsNullOrEmpty(PlateNumber) || string.IsNullOrWhiteSpace(PlateNumber))
             { Console.WriteLine("Plate number is required!"); return null; }
 
-            pattern = @"^[a-zA-Z0-9 ]{7}$";
+            pattern = @"^[a-zA-Z0-9 ]{8}$";
 
             isValid = Regex.IsMatch(PlateNumber, pattern);
 
             if (!isValid)
-            { Console.WriteLine("Plate number must be 7 characters long and alphanumeric!"); return null; }
+            { Console.WriteLine($"Plate number must be {ProgramVariables.PlateNumberCharacters} characters long and alphanumeric!"); return null; }
 
             PlateNumber = PlateNumber.ToUpper();
 

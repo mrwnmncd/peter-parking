@@ -23,7 +23,7 @@ class UserInterface
             isValid = Regex.IsMatch(plateNumber, pattern);
 
             if (!isValid)
-            { Console.WriteLine($"Plate number must be {Environment.PlateNumberCharacters} characters long and alphanumeric!"); continue; }
+            { Console.WriteLine($"Plate number must be {ProgramVariables.PlateNumberCharacters} characters long and alphanumeric!"); continue; }
 
             break;
         }
