@@ -8,10 +8,10 @@ A vehicle parking console program for monitoring and recording parking records. 
 The program is created with `C#` in **.NET 8.0**. With zero dependencies on third-party libraries.
 
 # Installation
-Download a distributed executable file from GitHub Releases. Compatible to run for macOS with M-series chip (*arm64*) and Windows with 64-bit architecture (*win64*). See Usage.
+Download a distributed executable file from GitHub Releases. Compatible to run for macOS with M-series chip (*arm64*) and Windows with 64-bit architecture (*win64*).
 
 ### Build and Compile from Source
-Peter parking is built with .NET SDK. With zero dependency, the only prerequisite is to download the latest .NET to build or compile it. The project targets .NET 8.0. See COMPILATION.
+Peter parking is built with .NET SDK. With zero dependency, the only prerequisite is to download the latest .NET to build or compile it. The project targets .NET 8.0. See [COMPILING](https://github.com/mrwnmncd/peter-parking/blob/master/COMPILING.md).
 
 ### Usage
 After downloading the executables, simply run it and you will be prompted with a terminal.
@@ -19,10 +19,17 @@ After downloading the executables, simply run it and you will be prompted with a
 > The application is not verified and signed. You may need to configure your antivirus to whitelist the app before you can run it.
 
 # Documentation
-This program is an integrated program. Classes are designed to interact directly with the console as its UI and not as an API. The documentation will only explain the methods and their fundamental functions but are not intended for use as a library or module for other programs. See DOCUMENTATION.
+This program is an integrated program. Classes are designed to interact directly with the console as its UI and not as an API. The documentation will only explain the methods and their fundamental functions but are not intended for use as a library or module for other programs.
+
+Documentation is still under work. Please bear with us.
 
 # Support
 If you encounter a common problem, see TROUBLESHOOTING for some remedies. If the runtime throws an error or you notice a bug, create an issue on GitHub and describe the error.
+
+A comprehensive troubleshooting guide in the documentation will be made available soon.
+
+# Contributing to the Application
+Fixes for bugs, refactoring for efficiency, or simple reporting of poor performance such as errors are truly appreciated for the betterment of the program. See [CONTRIBUTING](https://github.com/mrwnmncd/peter-parking/blob/master/CONTRIBUTING.md).
 
 #### Creating Issues and Reporting a Bug
 When reporting an issue, please make sure to describe the error comprehensively. 
