@@ -1,9 +1,8 @@
-class Environment
+class ProgramVariables
 {
     public static string name = "Peter Parking";
-    public static int spaces = 50;
-    public static Dictionary<string, string> credentials = new Dictionary<string, string>() {
-        {"username", "admin"},
-        {"password", "admin"}
-    };
+    public static int InitialCapacity = 50;
+
+    public static int PlateNumberCharacters = 8;
+    public static string ParkingSpacePath = "./parking-space.txt";
 }

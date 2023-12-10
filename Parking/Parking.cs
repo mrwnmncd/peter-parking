@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Data;
 using System.Text.RegularExpressions;
 public class ParkingSpace
 {
@@ -8,19 +5,20 @@ public class ParkingSpace
     public Vehicle[] parkingspace { get; set; }
     public int Capacity { get; }
 
-    public ParkingSpace(int capacity = 50)
+    public ParkingSpace(int capacity = 0)
     {
+        if (capacity == 0) capacity = ProgramVariables.InitialCapacity;
         this.Capacity = capacity;
-        this.parkingspace = new Vehicle[capacity]; ;
+        this.parkingspace = VehicleFS.CreateVehicleInstance();
     }
 
-    public void ParkVehicle()
+    public void ParkVehicle(Vehicle? vehicle = null)
     {
         Console.WriteLine("Park Vehicle");
         string parkingSlot;
         int slot;
 
-        Vehicle vehicle = Vehicle.InputVehicle();
+        if (vehicle is null) vehicle = UserInterface.InputVehicle();
 
         while (true)
         {
@@ -42,20 +40,16 @@ public class ParkingSpace
                 SearchNearestFreeParking();
                 Console.Write($"Park vehicle there instead? [y/N]: ");
                 string choice = Console.ReadLine()!;
-                if (choice == "y") ParkVehicle();
+                if (choice == "y") ParkVehicle(vehicle);
             }
             return;
         }
 
-        vehicle = new Vehicle()
-        { Make = vehicle.Make, Model = vehicle.Model, PlateNumber = vehicle.PlateNumber! };
-
-        if (this.parkingspace[slot] is null || this.parkingspace[slot].PlateNumber == null)
+        if (VehicleFS.CheckIfParkingLotIsAvailable(slot))
         {
-            Console.WriteLine($"Parking lot {parkingSlot + 1} reserved "
+            VehicleFS.WriteToFile(vehicle.Make!, vehicle.Model!, vehicle.PlateNumber!, slot);
+            Console.WriteLine($"Parking lot {parkingSlot} reserved "
             + $"for vehicle with plate number \"{vehicle.PlateNumber!}\".\n");
-
-            this.parkingspace[slot] = vehicle;
             return;
         }
         else
@@ -67,7 +61,7 @@ public class ParkingSpace
                 SearchNearestFreeParking();
                 Console.Write($"Park vehicle there instead? [y/N]: ");
                 string choice = Console.ReadLine()!;
-                if (choice == "y") ParkVehicle();
+                if (choice == "y") ParkVehicle(vehicle);
             }
         }
     }
@@ -84,55 +78,58 @@ public class ParkingSpace
         plateNumber = Console.ReadLine()!;
 
         if (string.IsNullOrEmpty(plateNumber) || string.IsNullOrWhiteSpace(plateNumber))
-            Console.WriteLine("Plate number is required!");
+        { Console.WriteLine("Plate number is required!"); return; }
 
-        vehicle = SearchVehicle();
+        Console.WriteLine(plateNumber);
+
+        vehicle = SearchVehicle(plateNumber)!;
+        Console.WriteLine(vehicle.PlateNumber);
         if (vehicle is null) return;
 
         slot = Array.FindIndex(this.parkingspace, vehicle => vehicle.PlateNumber == plateNumber);
-        this.parkingspace[slot] = new Vehicle();
+        VehicleFS.RemoveFromFile(vehicle.PlateNumber!);
 
-        Console.WriteLine($"Vehicle with plate number \"{plateNumber}\" removed from parking {slot}.\n");
+        Console.WriteLine($"Vehicle with plate number \"{plateNumber}\" removed from parking {slot + 1}.\n");
     }
 
     public void UpdateParkingDetails()
     {
         string plateNumber;
-        int slot;
-        string? make;
-        string? model;
+        string newPlateNumber;
+        string? inputMake;
+        string? inputModel;
         Vehicle vehicle;
 
         Console.WriteLine("Update Parking Details");
 
-        Console.Write("Enter plate number: ");
-        plateNumber = Console.ReadLine()!;
+        plateNumber = UserInterface.InputPlateNumber();
 
-        if (string.IsNullOrEmpty(plateNumber) || string.IsNullOrWhiteSpace(plateNumber))
-            Console.WriteLine("Plate number is required!");
+        vehicle = SearchVehicle(plateNumber)!;
 
-        slot = Array.FindIndex(this.parkingspace, vehicle => vehicle.PlateNumber == plateNumber);
-        vehicle = this.parkingspace[slot];
+        if (vehicle is null) return;
 
         Console.WriteLine($"Parking details for vehicle with plate number \"{plateNumber}\":");
-        Console.WriteLine(vehicle.ToForrmattedString());
+        Console.WriteLine(vehicle.ToStructuredString());
         Console.WriteLine();
 
-        Console.Write("Enter vehicle make (manufacturer) [enter to skip]: ");
-        make = Console.ReadLine();
-        Console.Write("Enter vehicle model [enter to skip]: ");
-        model = Console.ReadLine();
-        Console.WriteLine("Enter vehicle plate number [enter to skip]: ");
-        plateNumber = Console.ReadLine()!;
+        inputMake = UserInterface.InputMake();
+        inputModel = UserInterface.InputModel();
+        Console.Write("Enter new vehicle plate number [enter to skip]: ");
+        newPlateNumber = Console.ReadLine()!;
 
-        if (!string.IsNullOrEmpty(plateNumber) || !string.IsNullOrWhiteSpace(plateNumber))
-            vehicle.PlateNumber = plateNumber;
-        if (!string.IsNullOrEmpty(make) || !string.IsNullOrWhiteSpace(make))
-            vehicle.Make = make;
-        if (!string.IsNullOrEmpty(model) || !string.IsNullOrWhiteSpace(model))
-            vehicle.Model = model;
+        if (!string.IsNullOrEmpty(inputMake) || !string.IsNullOrWhiteSpace(inputMake))
+            vehicle.Make = inputMake;
 
-        Console.WriteLine($"Parking details updated for vehicle with plate number \"{plateNumber}\".\n");
+        if (!string.IsNullOrEmpty(inputModel) || !string.IsNullOrWhiteSpace(inputModel))
+            vehicle.Model = inputModel;
+
+        if (!string.IsNullOrEmpty(newPlateNumber) || !string.IsNullOrWhiteSpace(newPlateNumber))
+            vehicle.PlateNumber = newPlateNumber;
+
+        vehicle = VehicleFS.UpdateVehicle(plateNumber, vehicle.PlateNumber, vehicle.Make, vehicle.Model)!;
+
+
+        Console.WriteLine($"Parking details updated for vehicle with plate number \"{vehicle.PlateNumber}\".\n");
     }
 
     public void ListVehicles()
@@ -140,53 +137,80 @@ public class ParkingSpace
 
         Console.WriteLine("Enumerate Occupied Parking");
 
-        Console.WriteLine($"\nTotal parking space: {this.parkingspace.Length}");
-        Console.WriteLine("Vehicles in parking space:");
+        this.parkingspace = VehicleFS.EnumerateParkedVehicles();
+
+        Console.WriteLine($"\nTotal parking space: {this.parkingspace.Length + 1}");
+        if (this.parkingspace.Length == 0) return;
+
+        // Console.WriteLine("Vehicles in parking space:");
 
         for (int i = 0; i < this.parkingspace.Length; i++)
         {
             if (this.parkingspace[i] is not null && this.parkingspace[i].PlateNumber != null)
                 Console.WriteLine($"\tParking slot {i + 1}: {this.parkingspace[i].ToString()}");
         }
+        Console.WriteLine('\n');
     }
 
-    public Vehicle? SearchVehicle()
+    public Vehicle? SearchVehicle(string? PlateNumber = null)
     {
-        Vehicle vehicle = new Vehicle();
-        int slot;
-        string plateNumber;
+        Vehicle vehicle;
+        string pattern;
+        bool isValid;
 
-        Console.Write("Enter plate number: ");
-        plateNumber = Console.ReadLine()!;
+        Console.WriteLine("Search Vehicle");
 
-        if (string.IsNullOrEmpty(plateNumber) || string.IsNullOrWhiteSpace(plateNumber))
-            Console.WriteLine("Plate number is required!");
-
-        if (!Array.Exists(this.parkingspace, vehicle => vehicle.PlateNumber == plateNumber))
+        if (PlateNumber is null)
         {
-            Console.WriteLine($"No parking match found for vehicle with plate number \"{plateNumber}\".\n");
+            Console.Write("Enter plate number: ");
+            PlateNumber = Console.ReadLine()!;
+
+            if (string.IsNullOrEmpty(PlateNumber) || string.IsNullOrWhiteSpace(PlateNumber))
+            { Console.WriteLine("Plate number is required!"); return null; }
+
+            pattern = @"^[a-zA-Z0-9 ]{8}$";
+
+            isValid = Regex.IsMatch(PlateNumber, pattern);
+
+            if (!isValid)
+            { Console.WriteLine($"Plate number must be {ProgramVariables.PlateNumberCharacters} characters long and alphanumeric!"); return null; }
+        }
+        PlateNumber = PlateNumber.ToUpper();
+        vehicle = VehicleFS.SearchVehicle(PlateNumber)!;
+
+        if (vehicle is null)
+        {
+            Console.WriteLine($"No parking match found for vehicle with plate number \"{PlateNumber}\".\n");
             return null;
         }
 
-        slot = Array.FindIndex(this.parkingspace, vehicle => vehicle.PlateNumber == plateNumber);
-        vehicle = this.parkingspace[slot];
+        Console.WriteLine($"Parking details for vehicle with plate number \"{PlateNumber}\":");
+        Console.WriteLine(vehicle.ToStructuredString());
+        Console.WriteLine('\n');
 
         return vehicle;
     }
 
-    public int SearchNearestFreeParking()
+    public void SearchNearestFreeParking()
     {
-        int availableSlot = Array.IndexOf(this.parkingspace, null) + 1;
-        Console.WriteLine($"Nearest parking lot available is lot number {availableSlot}.\n");
+        Console.WriteLine("Search Nearest Free Parking");
+
+        int? emptySlot = VehicleFS.SearchEmptySlot();
+
+        if (emptySlot is null)
+        {
+            Console.WriteLine("No available parking slots.\n");
+            return;
+        }
+
+        Console.WriteLine($"Nearest parking lot available is lot number {emptySlot + 1}.\n");
         Console.WriteLine();
-        return availableSlot;
     }
     public void ExtendParkingSpace()
     {
         string inputCapacity;
         int capacity;
-
-        Vehicle[] space;
+        int spaces;
 
         Console.WriteLine("Add Parking Lots");
 
@@ -200,112 +224,11 @@ public class ParkingSpace
         };
         Console.WriteLine();
 
-        space = this.parkingspace;
-        Array.Resize(ref space, this.parkingspace.Length + capacity);
-        this.parkingspace = space;
+        spaces = VehicleFS.ExtendParkingLots(capacity);
 
-        Console.WriteLine($"Parking space extended by {capacity} lots. Total of {space.Length} parking lots.");
+        Console.WriteLine($"Parking space extended by {capacity} lots. Total of {spaces} parking lots.");
         Console.WriteLine('\n');
     }
 }
-public class Vehicle
-{
-    public string? Make { get; set; }
-    public string? Model { get; set; }
-    public string? PlateNumber { get; set; }
 
-    public override string ToString()
-    {
-        return $"{this.PlateNumber} {this.Make} {this.Model}";
-    }
 
-    public string ToForrmattedString()
-    {
-        return $"Make: {this.Make} " +
-            $"Model: {this.Model} " +
-            $"Plate Number: {this.PlateNumber}";
-    }
-
-    public static string InputPlateNumber()
-    {
-        string plateNumber;
-        string pattern;
-        bool isValid;
-
-        while (true)
-        {
-            Console.Write("Enter plate number: ");
-            plateNumber = Console.ReadLine()!;
-
-            pattern = @"^[a-zA-Z0-9]{7}$";
-
-            isValid = Regex.IsMatch(plateNumber, pattern);
-
-            if (!isValid)
-            { Console.WriteLine("Plate number must be 7 characters long and alphanumeric!"); continue; }
-
-            if (string.IsNullOrEmpty(plateNumber) || string.IsNullOrWhiteSpace(plateNumber))
-            { Console.WriteLine("Plate number is required!"); continue; }
-            break;
-        }
-
-        return plateNumber;
-    }
-
-    public static string? InputMake()
-    {
-        string? make;
-
-        Console.Write("Enter vehicle make (manufacturer) [enter to skip]: ");
-        make = Console.ReadLine();
-
-        return make;
-    }
-
-    public static string? InputModel()
-    {
-        string? model;
-
-        Console.Write("Enter vehicle model [enter to skip]: ");
-        model = Console.ReadLine();
-
-        return model;
-    }
-
-    public static Vehicle InputVehicle()
-    {
-        string plateNumber;
-        string? make;
-        string? model;
-        Vehicle vehicle;
-
-        plateNumber = InputPlateNumber();
-        make = InputMake();
-        model = InputModel();
-
-        vehicle = new Vehicle()
-        { Make = make, Model = model, PlateNumber = plateNumber };
-
-        return vehicle;
-    }
-
-    public static int? InputParkingLotNumber()
-    {
-        string parkingSlot;
-        int slot;
-
-        Console.Write("Enter parking lot [required]: ");
-        parkingSlot = Console.ReadLine()!;
-
-        if (string.IsNullOrEmpty(parkingSlot) || string.IsNullOrWhiteSpace(parkingSlot))
-            Console.WriteLine("Parking lot is required!\n");
-
-        if (!int.TryParse(parkingSlot, out slot))
-        {
-            Console.WriteLine("Parking lot must be a valid number!\n");
-            return null;
-        }
-
-        return slot;
-    }
-}
