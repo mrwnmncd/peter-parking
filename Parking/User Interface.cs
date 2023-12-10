@@ -38,6 +38,9 @@ class UserInterface
         Console.Write("Enter vehicle make (manufacturer) [enter to skip]: ");
         make = Console.ReadLine();
 
+        if (string.IsNullOrEmpty(make) || string.IsNullOrWhiteSpace(make))
+            make = "unspecified";
+
         return make;
     }
 
@@ -47,6 +50,9 @@ class UserInterface
 
         Console.Write("Enter vehicle model [enter to skip]: ");
         model = Console.ReadLine();
+
+        if (string.IsNullOrEmpty(model) || string.IsNullOrWhiteSpace(model))
+            model = "unspecified";
 
         return model;
     }

@@ -78,9 +78,12 @@ public class ParkingSpace
         plateNumber = Console.ReadLine()!;
 
         if (string.IsNullOrEmpty(plateNumber) || string.IsNullOrWhiteSpace(plateNumber))
-            Console.WriteLine("Plate number is required!");
+        { Console.WriteLine("Plate number is required!"); return; }
 
-        vehicle = SearchVehicle(plateNumber);
+        Console.WriteLine(plateNumber);
+
+        vehicle = SearchVehicle(plateNumber)!;
+        Console.WriteLine(vehicle.PlateNumber);
         if (vehicle is null) return;
 
         slot = Array.FindIndex(this.parkingspace, vehicle => vehicle.PlateNumber == plateNumber);
@@ -171,11 +174,8 @@ public class ParkingSpace
 
             if (!isValid)
             { Console.WriteLine($"Plate number must be {ProgramVariables.PlateNumberCharacters} characters long and alphanumeric!"); return null; }
-
-            PlateNumber = PlateNumber.ToUpper();
-
         }
-
+        PlateNumber = PlateNumber.ToUpper();
         vehicle = VehicleFS.SearchVehicle(PlateNumber)!;
 
         if (vehicle is null)
@@ -210,7 +210,6 @@ public class ParkingSpace
     {
         string inputCapacity;
         int capacity;
-
         int spaces;
 
         Console.WriteLine("Add Parking Lots");
