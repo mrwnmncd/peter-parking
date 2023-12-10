@@ -29,3 +29,15 @@ The flow will look something like this:
 
 We will review your pull request and either merge it, request changes to it, or close it with an explanation.
 
+---
+
+### Creating Issues and Reporting a Bug
+
+When reporting an issue, please make sure to describe the error comprehensively.
+
+Make a concise and descriptive title, highlighting the essence of the bug
+Explain the observed behavior and its impact.
+If possible, state what you are expecting to happen and what actually happened.
+State what you did. Enumerate the exact steps needed to consistently reproduce the bug.
+Specify the operating system, program version, software version, and any relevant hardware details.
+If you have additional information, you may also include them such as any workarounds or related bug reports you've found. You may also include screenshots, screen recordings to illustrate the issue.
