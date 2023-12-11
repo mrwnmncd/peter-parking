@@ -347,3 +347,6 @@ $RECYCLE.BIN/
 *.lnk
 
 parking-space.txt
+
+dist/**
+**.zip
