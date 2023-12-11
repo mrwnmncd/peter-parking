@@ -10,7 +10,7 @@ A vehicle parking console program for monitoring and recording parking records. 
 The program is created with `C#` in **.NET 8.0**. With zero dependencies on third-party libraries.
 
 # Installation
-Download a distributed executable file from GitHub Releases. Compatible to run for macOS with M-series chip (*arm64*) and Windows with 64-bit architecture (*win64*).
+Download a distributed executable file from [**GitHub Releases**](https://github.com/mrwnmncd/peter-parking/releases). Compatible to run for macOS with M-series chip (*arm64*) and Windows with 64-bit architecture (*win64*).
 
 ### Build and Compile from Source
 Peter parking is built with .NET SDK. With zero dependency, the only prerequisite is to download the latest .NET to build or compile it. The project targets .NET 8.0. See [COMPILING](https://github.com/mrwnmncd/peter-parking/blob/master/COMPILING.md).
