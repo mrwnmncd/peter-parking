@@ -9,7 +9,7 @@ class FileManager
     }
     public static void CreateFile(string path)
     {
-        if (!File.Exists(path))
+        if (!CheckFileExists(path))
         {
             File.Create(path).Close();
         }

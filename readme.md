@@ -10,10 +10,13 @@ A vehicle parking console program for monitoring and recording parking records. 
 The program is created with `C#` in **.NET 8.0**. With zero dependencies on third-party libraries.
 
 # Installation
-Download a distributed executable file from GitHub Releases. Compatible to run for macOS with M-series chip (*arm64*) and Windows with 64-bit architecture (*win64*).
+There is no need to intsall the program. Peter Parking is purely console-based. Simply download an executable or build or compile and run it right away. There are two ways Peter Parking can be ran: *(a)* through direct distribution or *(b)* by building it from the source.
+
+### Download a Distribution
+Peter Parking is compiled after tested before the source code is consolidated and released. These releases comes with the compiled program that can be directly executed and ran. For now, we test our codes with Macintosh and Windows machines but we are currently making a CI/CD. Download a copy compatible to your computer in [**GitHub Releases**](https://github.com/mrwnmncd/peter-parking/releases). 
 
 ### Build and Compile from Source
-Peter parking is built with .NET SDK. With zero dependency, the only prerequisite is to download the latest .NET to build or compile it. The project targets .NET 8.0. See [COMPILING](https://github.com/mrwnmncd/peter-parking/blob/master/COMPILING.md).
+Peter Parking is built with .NET SDK. With zero dependency, the only prerequisite is to download the latest .NET to build or compile it. The project targets .NET 8.0. See [**COMPILING**](https://github.com/mrwnmncd/peter-parking/blob/master/COMPILING.md).
 
 ### Usage
 After downloading the executables, simply run it and you will be prompted with a terminal.
@@ -31,7 +34,7 @@ If you encounter a common problem, see TROUBLESHOOTING for some remedies. If the
 A comprehensive troubleshooting guide in the documentation will be made available soon.
 
 # Contributing to the Application
-Fixes for bugs, refactoring for efficiency, or simple reporting of poor performance such as errors are truly appreciated for the betterment of the program. See [CONTRIBUTING](https://github.com/mrwnmncd/peter-parking/blob/master/CONTRIBUTING.md).
+Fixes for bugs, refactoring for efficiency, or simple reporting of poor performance such as errors are truly appreciated for the betterment of the program. See [**CONTRIBUTING**](https://github.com/mrwnmncd/peter-parking/blob/master/CONTRIBUTING.md).
 
 #### Creating Issues and Reporting a Bug
 When reporting an issue, please make sure to describe the error comprehensively. 
