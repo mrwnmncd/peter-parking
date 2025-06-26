@@ -55,7 +55,7 @@ public class ParkingSpace
         else
         {
             Console.WriteLine($"\nParking lot is already taken "
-            + "for vehicle with plate number \"{this.parkingspace[slot].PlateNumber}\".");
+            + $"for vehicle with plate number \"{this.parkingspace[slot].PlateNumber}\".");
 
             {
                 SearchNearestFreeParking();
